@@ -1,3 +1,5 @@
+
+require('dotenv').config();
 const AWS = require('aws-sdk');
 
 let options = {};
@@ -10,7 +12,6 @@ if(process.env.IS_OFFLINE){
 }
 
 if(process.env.JEST_WORKER_ID){
-    require('dotenv').config();
     options = {
         region: "local-env",
         endpoint: 'http://localhost:8000',
