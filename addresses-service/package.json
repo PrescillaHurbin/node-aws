@@ -1,0 +1,31 @@
+{
+  "name": "node-aws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "install-db": "sls dynamodb install",
+    "start": "sls offline start --location .",
+    "test": "jest",
+    "deploy": "sls deploy"
+  },
+  "author": "Prescilla Hurbin",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "aws-sdk": "^2.978.0",
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@shelf/jest-dynamodb": "^2.1.0",
+    "jest": "^27.1.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^8.0.0",
+    "serverless-plugin-scripts": "^1.0.2",
+    "serverless-webpack": "^5.5.2",
+    "webpack": "^5.51.1"
+  }
+}
