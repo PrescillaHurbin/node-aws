@@ -1,0 +1,14 @@
+# Package directories
+node_modules
+
+# Serverless directories
+.serverless
+
+# Webpack directories
+.webpack
+
+# Dynamo DB Offile directories
+.dynamodb
+
+# Dotenv environment variables file
+.env
