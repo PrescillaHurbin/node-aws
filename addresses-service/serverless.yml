@@ -9,6 +9,11 @@ provider:
   stage: dev
   region: eu-west-3
   lambdaHashingVersion: "20201221"
+  environment:
+    DYNAMODB_TABLE_NAME: ${self:custom.tableName}
+    GOOGLE_GEOCODE_API_KEY : ${env:GOOGLE_GEOCODE_API_KEY}
+    COUNTRY_CODE: ${env:COUNTRY_CODE}
+    COUNTRY_LABEL: ${env:COUNTRY_LABEL}
   apiGateway:
     apiKeys:
       - ${self:provider.stage}-client
