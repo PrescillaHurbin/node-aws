@@ -30,9 +30,9 @@ custom:
       migrate: true
     migration:
       dir: offline/migrations
-  # scripts:
-  #   hooks:
-  #     'aws:common:validate:validate': jest
+  scripts:
+    hooks:
+      'aws:common:validate:validate': jest
   bucketName: ${env:BUCKET_NAME}
 
 plugins:
@@ -109,7 +109,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         StreamSpecification:
-          StreamViewType: NEW_IMAGE
+          StreamViewType: NEW_AND_OLD_IMAGES
     S3BucketAddress:
         Type: AWS::S3::Bucket
         Properties:
