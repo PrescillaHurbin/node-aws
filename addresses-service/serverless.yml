@@ -14,6 +14,7 @@ provider:
     GOOGLE_GEOCODE_API_KEY : ${env:GOOGLE_GEOCODE_API_KEY}
     COUNTRY_CODE: ${env:COUNTRY_CODE}
     COUNTRY_LABEL: ${env:COUNTRY_LABEL}
+    BUCKET_NAME: ${env:BUCKET_NAME}
   apiGateway:
     apiKeys:
       - ${self:provider.stage}-client
@@ -32,6 +33,7 @@ custom:
   scripts:
     hooks:
       'aws:common:validate:validate': jest
+  bucketName: ${env:BUCKET_NAME}
 
 plugins:
   - serverless-iam-roles-per-function
@@ -77,6 +79,18 @@ functions:
           - "dynamodb:UpdateItem"
           - "dynamodb:GetItem"
         Resource: !GetAtt DBTable.Arn
+  storeAddress:
+    name: store-address-to-s3
+    handler: lambdas/endpoints/storeAddress.handler
+    events:
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          arn:
+            Fn::GetAtt:
+              - DBTable
+              - StreamArn
 
 resources:
   Resources:
@@ -94,4 +108,25 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+    S3BucketAddress:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: ${self:custom.bucketName}
+    S3BucketPermissions:
+       Type: AWS::S3::BucketPolicy
+       DependsOn: S3BucketAddress
+       Properties:
+         Bucket: ${self:custom.bucketName}
+         PolicyDocument:
+           Statement:
+             - Principal: "*"
+               Action:
+                 - s3:GetObject
+                 - s3:PutObject
+               Effect: Allow
+               Sid: "AddPerm"
+               Resource: arn:aws:s3:::${self:custom.bucketName}/*
+    
     
